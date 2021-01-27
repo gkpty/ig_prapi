@@ -3,3 +3,4 @@ node_modules
 followers.json
 following.json
 notFollowingBack.json
+actions.json

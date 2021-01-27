@@ -2,7 +2,7 @@ import 'dotenv/config.js';
 import { IgApiClient } from 'instagram-private-api';
 import * as fs from 'fs';
 
-(async () => {
+const following = async () => {
   const ig = new IgApiClient();
   ig.state.generateDevice(process.env.IG_USERNAME);
   ig.state.proxyUrl = process.env.IG_PROXY;
@@ -29,4 +29,6 @@ import * as fs from 'fs';
     error => console.error(error),
     () => console.log('Complete!'),
   );
-})();
+};
+
+export default following

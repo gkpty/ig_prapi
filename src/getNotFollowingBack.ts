@@ -2,7 +2,7 @@ import 'dotenv/config.js';
 import { IgApiClient } from 'instagram-private-api';
 import * as fs from 'fs';
 
-(async () => {
+const notFollowingBack = async () => {
   const ig = new IgApiClient();
   const results = new Array();
   ig.state.generateDevice(process.env.IG_USERNAME);
@@ -18,5 +18,7 @@ import * as fs from 'fs';
   })
   console.log(results, results.length)
   fs.writeFileSync('notFollowingBack.json', JSON.stringify(results))
-})();
+}
+
+export default notFollowingBack
 
