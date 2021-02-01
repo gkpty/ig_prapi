@@ -1,7 +1,8 @@
 import 'dotenv/config.js';
 import { IgApiClient } from 'instagram-private-api';
-import { addAction } from './shared'
+import { addToActions } from './shared'
 
+//Follow a user
 const followUser = async (id: number) => {
   const ig = new IgApiClient();
   ig.state.generateDevice(process.env.IG_USERNAME);
@@ -9,7 +10,7 @@ const followUser = async (id: number) => {
   await ig.account.login(process.env.IG_USERNAME, process.env.IG_PASSWORD);
   const friendship = await ig.friendship.destroy(id)
   console.log(friendship)
-  await addAction(id, 'follow')  
+  await addToActions(id, 'follow')  
 }
 
 export default followUser;

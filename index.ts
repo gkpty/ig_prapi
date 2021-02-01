@@ -1,3 +1,3 @@
-import unfollowUser from './src/unfollow';
+import getFollowing from './src/getFollowing';
 
-unfollowUser(22188581895)
+getFollowing()
