@@ -6,11 +6,14 @@ import * as fs from 'fs';
 //For all of the people a given user is following, each person that is not already beign followed by you will be queued to get followed. 
 const followFollowing = async (username: string, priority: number) => {
   const myFollowing = fs.existsSync('following.json')? JSON.parse(fs.readFileSync('following.json', 'utf8')): []
+  console.log('MY FOLLOWING ', myFollowing)
   const users = myFollowing.filter((user: { username: string }) => user.username === username)
   if(users.length>0){
     const user = users[0]
+    console.log('USERR ', user)
     const userFollowing = await GetFollowing(user.pk)
-    let queue = fs.existsSync('queue.json')? JSON.parse(fs.readFileSync('queue.json', 'utf8')): null
+    console.log('USER FOLLOWING ', userFollowing)
+    let queue = fs.existsSync('queue.json')? JSON.parse(fs.readFileSync('queue.json', 'utf8')): []
     let queued = 0
     userFollowing.map(async newUser => {
       if(myFollowing.filter((mf: { pk: number }) => mf.pk === newUser.pk).length < 1){

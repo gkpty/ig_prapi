@@ -2,6 +2,7 @@ import 'dotenv/config.js';
 import { IgApiClient } from 'instagram-private-api';
 import { addToActions } from './shared'
 
+//unfollow a user
 const unfollowUser = async (id: number) => {
   const ig = new IgApiClient();
   ig.state.generateDevice(process.env.IG_USERNAME);

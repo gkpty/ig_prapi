@@ -1,3 +1,7 @@
 import getFollowers from '../src/getFollowers';
 
-getFollowers()
+try{
+  getFollowers()
+}catch(err){
+  console.log(err)
+}
