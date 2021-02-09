@@ -5,6 +5,7 @@ import followFollowers from './src/followFollowers';
 import followUser from './src/followUser';
 import unfollowUser from './src/unfollowUser';
 import getNotFollowingBack from './src/getNotFollowingBack';
+import executeAction from './src/executeAction'
 
 export {
   getFollowing,
@@ -13,5 +14,6 @@ export {
   followFollowers,
   followUser,
   unfollowUser,
-  getNotFollowingBack
+  getNotFollowingBack,
+  executeAction
 }

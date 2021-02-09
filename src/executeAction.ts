@@ -1,26 +1,27 @@
 import * as fs from 'fs';
-import Follow from './follow'
-import Unfollow from './unfollow'
+import followUser from './followUser'
+import unfollowUser from './unfollowUser'
 import {addToActions} from './shared'
 
+//execute an action from the queue with a given id 
 const executeAction = async (id: number) => {
   let queue = fs.existsSync('queue.json')? JSON.parse(fs.readFileSync('queue.json', 'utf8')): []
-  let pkActions = queue.filter((action: { pk: number; type: "follow" | "unfollow"}) => action.pk === id)
+  let pkActions = queue.filter((action: { pk: number; action: "follow" | "unfollow"}) => action.pk === id)
   if(pkActions.length > 0){
     let action = pkActions[0]
-    switch(action.type){
+    const newQueue = queue.filter((action: { pk: number }) => action.pk !== id)
+    switch(action.action){
       case 'follow':
-        await Follow(id)
-        break;
+        const follow = await followUser(id).catch(err=> {throw new Error(err)})
+        fs.writeFileSync('queue.json', JSON.stringify(newQueue))
+        return follow
       case 'unfollow':
-        await Unfollow(id)
-        break;
+        const unfollow = await unfollowUser(id).catch(err=> {throw new Error(err)})
+        fs.writeFileSync('queue.json', JSON.stringify(newQueue))
+        return unfollow
+      default:
+        throw new Error('Unsuported action type')
     }
-    //add to actions
-    addToActions(action.pk, action.type)
-    //remove from queue
-    let newQueue = queue.filter((action: { pk: number; }) => action.pk !== id)
-    fs.writeFileSync('queue.json', JSON.stringify(newQueue))
   }
   else throw new Error(`An action for a user with id ${id} doesnt exist in the actions log`)
 }
