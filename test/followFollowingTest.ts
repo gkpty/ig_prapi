@@ -1,7 +1,5 @@
-import followFollowing from '../src/followFollowing';
+import {followFollowing} from '../index';
 
-try{
-  followFollowing('ergonomicadesk', 2)
-}catch(err){
-  console.log(err)
-}
+followFollowing('ergonomicadesk', 2)
+.then(data => console.log(data))
+.catch(err => console.error(err))

@@ -3,26 +3,24 @@ import GetFollowing from './getFollowing'
 import { addToQueue } from './shared'
 import * as fs from 'fs';
 
-//For all of the people a given user is following, each person that is not already beign followed by you will be queued to get followed. 
+//For all of the people a given user is following, each person that is not already beign followed by you will be queued to get followed according to priority. 
 const followFollowing = async (username: string, priority: number) => {
   const myFollowing = fs.existsSync('following.json')? JSON.parse(fs.readFileSync('following.json', 'utf8')): []
-  console.log('MY FOLLOWING ', myFollowing)
   const users = myFollowing.filter((user: { username: string }) => user.username === username)
   if(users.length>0){
     const user = users[0]
-    console.log('USERR ', user)
     const userFollowing = await GetFollowing(user.pk)
-    console.log('USER FOLLOWING ', userFollowing)
     let queue = fs.existsSync('queue.json')? JSON.parse(fs.readFileSync('queue.json', 'utf8')): []
-    let queued = 0
+    let queued_count = 0
+    let skipped_count = 0
     userFollowing.map(async newUser => {
       if(myFollowing.filter((mf: { pk: number }) => mf.pk === newUser.pk).length < 1){
-        queue = await addToQueue(newUser.pk, priority, "follow", queue)
-        queued+=1
+        addToQueue(newUser.pk, newUser.username, priority, "follow", queue)
+        queued_count+=1
       }
-      else console.log(`User ${newUser.username} is already being followed`)
+      else skipped_count+=1
     })
-    console.log(`A total of ${queued} users were added to the queue to be folowed`)
+    console.log(`A total of ${queued_count} users were added to the queue and will be followed. A total of ${skipped_count} users were already being followed.`)
     fs.writeFileSync('queue.json', JSON.stringify(queue))
     return queue
   }

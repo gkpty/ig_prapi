@@ -1,7 +1,5 @@
-import getFollowers from '../src/getFollowers';
+import {getFollowers} from '../index';
 
-try{
-  getFollowers()
-}catch(err){
-  console.log(err)
-}
+getFollowers(null, 'ergonomicadesk')
+.then(data=>console.log(data))
+.catch(err=> console.error(err))
