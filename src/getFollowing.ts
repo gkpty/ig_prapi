@@ -19,7 +19,7 @@ const getFollowing = async (id?: number, username?: string) => {
       following => following_arr = following_arr.concat(following),
       error => reject(error),
       () => {
-        console.log('NUMBER OF FOLLOWING ', following_arr.length)
+        console.log('Account Following: ', following_arr.length)
         //update following.json
         if(id === auth.pk) fs.writeFileSync('following.json', JSON.stringify(following_arr))
         resolve(following_arr)

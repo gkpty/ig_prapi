@@ -2,6 +2,6 @@
 node_modules
 followers.json
 following.json
-notFollowingBack.json
+not_following_back.json
 actions.json
 queue.json
