@@ -13,7 +13,7 @@ const followUser = async (id?: number, username?: string) => {
   if(!id && !username) throw new Error(`Please supply at least one arg`)
   else if(username && !id) id = await getUserPk(username).catch(err => {throw new Error(err)})
   const friendship = await ig.friendship.create(id).catch(err => {throw new Error(err)})
-  const newActions = addToActions(id, 'follow')
+  const newActions = addToActions(id, 'follow', friendship.is_private)
   fs.writeFileSync('actions.json', JSON.stringify(newActions))
   return friendship
 }

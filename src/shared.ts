@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 
-const addToActions = (id: number, action: "follow" | "unfollow", actions?: Array<{pk:number, date:number, action:string}>) => {
+const addToActions = (id: number, action: "follow" | "unfollow", is_private: boolean, actions?: Array<{pk:number, date:number, action:string, is_private:boolean}>) => {
   let date = new Date()
   if(!actions) actions = fs.existsSync('actions.json')? JSON.parse(fs.readFileSync('actions.json', 'utf8')): []
-  actions.push({date:date.getTime(), action:action, pk:id})
+  actions.push({date:date.getTime(), action:action, is_private:is_private, pk:id})
   return actions
 }
 
