@@ -3,11 +3,12 @@ import GetFollowing from './getFollowing'
 import { addToQueue } from './shared'
 import * as fs from 'fs';
 
-//unfollow all users that are being followed (in actions.json) based on certain parameters 
+//unfollow all users that are being followed based on certain parameters 
 const unfollowAll = async (priority=2, params: {days_more_than?: number, days_less_than?: number, not_following_back?: boolean}) =>{
   if(!params.days_more_than) params.days_more_than = 3
   const actions = fs.existsSync('actions.json')? JSON.parse(fs.readFileSync('actions.json', 'utf8')): []
   let queue = fs.existsSync('queue.json')? JSON.parse(fs.readFileSync('queue.json', 'utf8')): []
+  //its a good idea to update the list of followers before running this
   let followers = fs.existsSync('followers.json')? JSON.parse(fs.readFileSync('followers.json', 'utf8')): []
   let followActions = actions.filter((action: { action: string }) => action.action === 'follow')
   let date = new Date()
@@ -19,12 +20,12 @@ const unfollowAll = async (priority=2, params: {days_more_than?: number, days_le
     if(dateDiff > params.days_more_than) {
       if(params.not_following_back){
         if(followers.filter((follower: { pk: number; }) => follower.pk === action.pk).length < 1){
-          queue = addToQueue(action.pk, priority, 'unfollow', queue)
+          queue = addToQueue(action.pk, 'username', priority, 'unfollow', queue)
           queued+=1
         }
       }
       else{
-        queue = addToQueue(action.pk, priority, 'unfollow', queue)
+        queue = addToQueue(action.pk, 'username', priority, 'unfollow', queue)
         queued+=1
       }
     }
